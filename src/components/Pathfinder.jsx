@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Component } from 'react';
 import {Node} from '.';
+import {v4} from 'uuid';
 
 class Pathfinder extends Component {
 
@@ -29,7 +30,7 @@ class Pathfinder extends Component {
         for(let i = 0; i < rowLimit; i++){
             let currentRow = [];
             for(let j = 0; j < columnLimit; j++){
-                currentRow.push({r: i, c: j});
+                currentRow.push({r: i, c: j, id:v4()});
             }
             nodes = [...nodes, currentRow];
         }
@@ -75,7 +76,16 @@ class Pathfinder extends Component {
         return(
             <div className="grid" style={gridStyle} ref={this.gridRef}>
                 {nodes.map( (row, rowIdx) => 
-                    row.map( (node, nodeIdx) => (<Node key={`${nodeIdx}`}  node={node} style={computedStyles.node}></Node>)
+                    row.map( (node, nodeIdx) => {
+                        
+
+                        return (<Node key={`${node.id}`}
+                                                node={node} 
+                                                style={computedStyles.node}
+                                                idx={nodeIdx}
+                                                isStart={node.id === nodes[0][0].id}
+                                                isFinish={node.id === nodes[rowLimit -1][ columnLimit -1].id}>
+                                                </Node>)}
                     )
                 )}
                 

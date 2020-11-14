@@ -1,0 +1,15 @@
+.node {
+    border: '1px solid #0b0fbf';
+    background: '#fefeff';
+    min-width: '5px';
+    min-height: '5px';
+    box-sizing: 'border-box';
+}
+
+.start-node{
+    background-color: aqua;
+}
+
+.end-node{
+    background-color: brown;
+}
