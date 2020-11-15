@@ -17,6 +17,8 @@ class Pathfinder extends Component {
         }
         this.gridRef = React.createRef(null);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.handleHover = this.handleHover.bind(this);
+        this.handleHoverLeave = this.handleHoverLeave.bind(this);
 
     }
 
@@ -56,6 +58,24 @@ class Pathfinder extends Component {
             boxSize: this.state.gridWidth / this.props.columnLimit
         })
     }
+    handleHover({r, c}){
+        // shallow copy nodes
+        const nodes = this.state.nodes;
+        if(r + 1 < nodes.length) nodes[r + 1][c].isHovered = true;
+        if(c + 1 < nodes[0].length)nodes[r][c + 1].isHovered = true;
+        if(r >  0)nodes[r - 1][c].isHovered = true;
+        if(c > 0)nodes[r][c - 1].isHovered = true;
+        this.setState({nodes})
+    }
+    handleHoverLeave({r, c}){
+        const nodes = this.state.nodes;
+        if(r + 1 < nodes.length) nodes[r + 1][c].isHovered = false;
+        if(c + 1 < nodes[0].length)nodes[r][c + 1].isHovered = false;
+        if(r >  0)nodes[r - 1][c].isHovered = false;
+        if(c > 0)nodes[r][c - 1].isHovered = false;
+        this.setState({nodes})
+
+    }
 
 
     render(){
@@ -84,7 +104,10 @@ class Pathfinder extends Component {
                                                 style={computedStyles.node}
                                                 idx={nodeIdx}
                                                 isStart={node.id === nodes[0][0].id}
-                                                isFinish={node.id === nodes[rowLimit -1][ columnLimit -1].id}>
+                                                isFinish={node.id === nodes[rowLimit -1][ columnLimit -1].id}
+                                                onHover={this.handleHover}
+                                                onHoverLeave={this.handleHoverLeave}
+                                                >
                                                 </Node>)}
                     )
                 )}
