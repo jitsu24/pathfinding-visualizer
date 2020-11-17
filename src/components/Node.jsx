@@ -4,12 +4,14 @@ import './node.css';
 
 
 const Node = props => { 
-  const {style, node, isStart, isFinish, onHover, onHoverLeave, isHovered} = props;
+  const {style, node, isStart, isFinish, onHover, onHoverLeave, isHovered, isVisited} = props;
   
   const generateClassNames = ()=>{
-    if(isStart) return 'start-node';
-    if(isFinish) return 'end-node';
-    return '';     
+    let classes = 'node';
+    if(isStart) classes += ' start-node';
+    if(isFinish) classes+=' end-node';
+    if(isVisited) classes += ' isVisited';
+    return classes;     
   };
   const generatedClassNames = generateClassNames();
  

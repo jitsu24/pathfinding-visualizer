@@ -1,7 +1,9 @@
 import Pathfinder from './Pathfinder';
+import Menu from './Menu';
 import Node from './Node';
 
 export {
-    Pathfinder,
-    Node
+    Menu,
+    Node,
+    Pathfinder
 }

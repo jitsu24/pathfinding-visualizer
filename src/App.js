@@ -1,16 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
-import {Pathfinder} from './components'
+import {Algos} from './screens';
 
 function App() {
   return (
     <div className="App">
-      <Pathfinder
-      rowLimit={30}
-      columnLimit={20}
-      >
-
-      </Pathfinder>
+      <Algos></Algos>
     </div>
   );
 }

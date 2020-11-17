@@ -13,3 +13,7 @@
 .end-node{
     background-color: brown;
 }
+
+.isVisited{
+    background-color: yellow;
+}

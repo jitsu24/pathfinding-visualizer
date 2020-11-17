@@ -2,32 +2,33 @@ import React, { useEffect, useState, Component } from 'react';
 import {Node} from '.';
 import {v4} from 'uuid';
 
+import {NAV_HEIGHT, NODE_PROPS} from '../constants';
+import {BFS} from '../algos';
+
+
+
 class Pathfinder extends Component {
 
     constructor(props){
         super(props);
-
         this.state = {
             nodes : [],
             windowWidth: null,
             windowHeight: null,
             gridWidth: null,
             boxSize: null,
-            
         }
         this.gridRef = React.createRef(null);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
         this.handleHover = this.handleHover.bind(this);
         this.handleHoverLeave = this.handleHoverLeave.bind(this);
-
+        this.updateNodesState = this.updateNodesState.bind(this);
     }
-
 
     componentDidMount(){
         let {rowLimit, columnLimit} = this.props;
         let nodes = this.state.nodes;
         this.updateWindowDimensions();
-        
         window.addEventListener('resize', this.updateWindowDimensions);
         for(let i = 0; i < rowLimit; i++){
             let currentRow = [];
@@ -38,8 +39,7 @@ class Pathfinder extends Component {
         }
         this.setState({nodes});
 
-        console.table(nodes)
-
+        BFS(0, 0, nodes, this.updateNodesState)
     }
 
     
@@ -73,9 +73,13 @@ class Pathfinder extends Component {
         if(c + 1 < nodes[0].length)nodes[r][c + 1].isHovered = false;
         if(r >  0)nodes[r - 1][c].isHovered = false;
         if(c > 0)nodes[r][c - 1].isHovered = false;
-        this.setState({nodes})
-
+        this.setState({nodes});
     }
+    updateNodesState(newState){
+        this.setState({nodes: newState})
+    }
+
+
 
 
     render(){
@@ -92,7 +96,8 @@ class Pathfinder extends Component {
                 height: gridWidth/columnLimit
             }
         }
-        const gridStyle = Object.assign({}, styles.grid, computedStyles.grid)
+        const gridStyle = Object.assign({}, styles.grid, computedStyles.grid);
+
         return(
             <div className="grid" style={gridStyle} ref={this.gridRef}>
                 {nodes.map( (row, rowIdx) => 
@@ -102,9 +107,10 @@ class Pathfinder extends Component {
                         return (<Node key={`${node.id}`}
                                                 node={node} 
                                                 style={computedStyles.node}
-                                                idx={nodeIdx}
+                                                idx={`${rowIdx}${nodeIdx}`}
                                                 isStart={node.id === nodes[0][0].id}
                                                 isFinish={node.id === nodes[rowLimit -1][ columnLimit -1].id}
+                                                isVisited = {node.isVisited}
                                                 onHover={this.handleHover}
                                                 onHoverLeave={this.handleHoverLeave}
                                                 >
